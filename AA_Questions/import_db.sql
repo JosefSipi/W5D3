@@ -1,10 +1,10 @@
 PRAGMA foreign_keys = ON;
 
-DROP IF EXISTS question_likes;
-DROP IF EXISTS replies;
-DROP IF EXISTS question_follows;
-DROP IF EXISTS questions;
-DROP IF EXISTS users;
+DROP TABLE IF EXISTS question_likes;
+DROP TABLE IF EXISTS replies;
+DROP TABLE IF EXISTS question_follows;
+DROP TABLE IF EXISTS questions;
+DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
 id INTEGER PRIMARY KEY,
@@ -15,7 +15,8 @@ INSERT INTO
     users(fname, lname)
 VALUES
     ('Joseph', 'Sipiorski'),
-    ('Alex', 'Kerpelman');
+    ('Alex', 'Kerpelman'),
+    ('Sam', 'Lilly');
 
 
 CREATE TABLE questions (
@@ -43,10 +44,11 @@ FOREIGN KEY (users_id) REFERENCES users(id)
 );
 
 INSERT INTO
-    quesetion_follows(questions_id, users_id)
+    question_follows(questions_id, users_id)
 VALUES
 
-((SELECT id ...), (SELECT id ...)),
+((SELECT id FROM questions WHERE title = 'Flex?'), (SELECT id FROM users WHERE lname IN ('Kerpelman', 'Lilly'))),
+((SELECT id FROM questions WHERE title = 'CSS?'), (SELECT id FROM users WHERE lname = 'Sipiorski'));
 
 CREATE TABLE replies (
 id INTEGER PRIMARY KEY,
@@ -60,12 +62,24 @@ FOREIGN KEY (parent_id) REFERENCES replies(id),
 FOREIGN KEY (users_id) REFERENCES users(id)
 );
 
+INSERT INTO
+    replies (questions_id, parent_id, users_id, body)
+VALUES
+    ((SELECT id FROM questions WHERE title = 'Flex?'), NULL, (SELECT id FROM users WHERE lname = 'Kerpelman'), 'I have no idea!');
+
 CREATE TABLE question_likes (
 id INTEGER PRIMARY KEY,
 users_id INTEGER NOT NULL,
 questions_id INTEGER NOT NULL,
 
 FOREIGN KEY (users_id) REFERENCES users(id),
-FOREIGN KEY (questions_id) REFERENCES questions(id),
-)
+FOREIGN KEY (questions_id) REFERENCES questions(id)
+);
+
+INSERT INTO
+    question_likes (users_id, questions_id)
+VALUES
+    ((SELECT id FROM users WHERE lname = 'Sipiorski'), (SELECT id FROM questions WHERE title = 'CSS?'));
+
+
 
