@@ -22,7 +22,6 @@ body {
 
 }
 
-
 h1 {
   font-size: 38px;
 }
@@ -47,6 +46,21 @@ aside {
 .ingredients-list li {
   margin-top: 15px;
   margin-bottom: 15px;
+}
+
+section ol li{
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}
+#review {
+  display: block;
 }
 
 /* This selector selects ALL anchor tag children of ALL list elements that
