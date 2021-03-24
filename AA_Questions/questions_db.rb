@@ -1,6 +1,6 @@
 require 'sqlite3'
 require 'singleton'
-
+require 'byebug'
 
 class QuestionsDB < SQLite3::Database
     include Singleton
@@ -27,27 +27,26 @@ end
 class Questions
 
     def self.find_by_id(questions_id)
-        question_query = QuestionsDB.instance.execute(<<-SQL, questions_id)
+        question_query = QuestionsDB.instance.(<<-SQL, questions_id)
         SELECT
             *
         FROM
             questions
         WHERE
-            questions_id = ? 
+            questions.id = ? 
     SQL
-    Questions.new(question_query)
+    Questions.new(question_query.first)
     end
  
-
     attr_accessor :id, :title, :body, :author_id
     def initialize(options)
-        @id = options[id]
-        @title = options[title]
-        @body = options[body]
-        @author_id = options[author_id]
-
+        @id = options["id"]
+        @title = options["title"]
+        @body = options["body"]
+        @author_id = options["author_id"]
     end
 
+    def 
 
 end
 
